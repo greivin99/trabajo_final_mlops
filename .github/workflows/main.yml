@@ -26,7 +26,7 @@ jobs:
 
       - name: Execute the training model
         run: |
-          python3 retraining.py
+          python3 train_model.py
 
       - name: Generating report
         run: |
