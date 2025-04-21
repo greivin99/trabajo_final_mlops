@@ -75,4 +75,4 @@ jobs:
                   fi
                   
                   docker pull greivin99/trabajo_final_mlops
-                  docker run -d --name trabajo_final_mlops -p 8000:8000 greivin99/trabajo_final_mlops
+                  docker run -d --name trabajo_final_mlops -p 8001:8000 greivin99/trabajo_final_mlops
