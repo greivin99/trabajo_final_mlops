@@ -1,6 +1,6 @@
 ## 👥 Autores
-- **Greivin Alejandro Pérez Conejo**
-- **Erick Rodríguez Arguedas**
+- Greivin Alejandro Pérez Conejo | Sección 2 (Jueves)
+- Erick Rodríguez Arguedas | Sección 1 (Lunes)
 
 # 📊 Predicción del Puntaje de Examen Estudiantil
 
