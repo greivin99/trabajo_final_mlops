@@ -8,6 +8,8 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 import os
+import matplotlib.pyplot as plt
+
 
 # --------------------------------------------
 # CARGA DE DATOS
@@ -63,5 +65,21 @@ with open("metrics.txt", "w") as f:
 # --------------------------------------------
 os.makedirs("model", exist_ok=True)
 joblib.dump(pipeline, "model/gb_model.pkl")
+
+feature_names = numerical_cols + list(
+    preprocessor.named_transformers_["cat"].get_feature_names_out(categorical_cols)
+)
+
+importances = pipeline.named_steps["model"].feature_importances_
+
+# Crear gráfico
+plt.figure(figsize=(10, 6))
+plt.barh(feature_names, importances)
+plt.xlabel("Importancia")
+plt.title("Importancia de las características")
+plt.tight_layout()
+
+# Guardar imagen
+plt.savefig("feature_importance.png")
 
 print("✅ Modelo entrenado y guardado correctamente.")

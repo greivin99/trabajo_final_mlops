@@ -3,17 +3,48 @@ import joblib
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Cargar modelo entrenado
+# --- Función de validación de entradas ---
+def validate_inputs(data):
+    if not (10 <= data["age"] <= 100):
+        raise ValueError("Edad fuera de rango (10-100 años).")
+    if data["gender"] not in ["Male", "Female", "Other"]:
+        raise ValueError("Género inválido.")
+    if not (0.0 <= data["study_hours_per_day"] <= 10.0):
+        raise ValueError("Horas de estudio fuera de rango (0-10).")
+    if not (0.0 <= data["social_media_hours"] <= 10.0):
+        raise ValueError("Horas en redes sociales fuera de rango (0-10).")
+    if not (0.0 <= data["netflix_hours"] <= 10.0):
+        raise ValueError("Horas en Netflix fuera de rango (0-10).")
+    if data["part_time_job"] not in ["Yes", "No"]:
+        raise ValueError("Valor inválido para trabajo de medio tiempo.")
+    if not (0.0 <= data["attendance_percentage"] <= 100.0):
+        raise ValueError("Porcentaje de asistencia fuera de rango (0-100%).")
+    if not (0.0 <= data["sleep_hours"] <= 12.0):
+        raise ValueError("Horas de sueño fuera de rango (0-12).")
+    if data["diet_quality"] not in ["Poor", "Fair", "Good"]:
+        raise ValueError("Valor inválido para calidad de dieta.")
+    if not (0 <= data["exercise_frequency"] <= 14):
+        raise ValueError("Frecuencia de ejercicio fuera de rango (0-14).")
+    if data["parental_education_level"] not in ["None", "Primary", "Secondary", "Higher"]:
+        raise ValueError("Nivel educativo de los padres inválido.")
+    if data["internet_quality"] not in ["Poor", "Fair", "Good"]:
+        raise ValueError("Valor inválido para calidad del internet.")
+    if not (1 <= data["mental_health_rating"] <= 10):
+        raise ValueError("Estado de salud mental fuera de rango (1-10).")
+    if data["extracurricular_participation"] not in ["Yes", "No"]:
+        raise ValueError("Valor inválido para participación extracurricular.")
+
+# --- Cargar el modelo ---
 model = joblib.load("model/gb_model.pkl")
 
-# Título y descripción
+# --- Interfaz de usuario ---
 st.title("📊 Predicción del Puntaje de Examen")
 st.markdown("""
 Esta aplicación utiliza un modelo de inteligencia artificial para predecir el puntaje de examen de un estudiante, 
 basado en factores como hábitos de estudio, sueño, uso de redes sociales y más.
 """)
 
-# Formulario de entrada
+# --- Formulario de entrada ---
 with st.form("student_form"):
     st.header("📝 Ingrese los datos del estudiante")
 
@@ -34,9 +65,10 @@ with st.form("student_form"):
 
     submitted = st.form_submit_button("🎯 Predecir puntaje")
 
+# --- Procesamiento al enviar el formulario ---
 if submitted:
     try:
-        input_data = pd.DataFrame([{
+        input_data_dict = {
             "age": age,
             "gender": gender,
             "study_hours_per_day": study_hours_per_day,
@@ -51,7 +83,13 @@ if submitted:
             "internet_quality": internet_quality,
             "mental_health_rating": mental_health_rating,
             "extracurricular_participation": extracurricular_participation
-        }])
+        }
+
+        # Validar los datos
+        validate_inputs(input_data_dict)
+
+        # Crear DataFrame
+        input_data = pd.DataFrame([input_data_dict])
 
         # Predicción
         prediction = model.predict(input_data)[0]
@@ -69,4 +107,4 @@ if submitted:
         st.pyplot(fig)
 
     except Exception as e:
-        st.error(f"❌ Error al hacer la predicción: {str(e)}")
+        st.error(f"❌ Error en la predicción: {str(e)}")
