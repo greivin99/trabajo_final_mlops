@@ -1,0 +1,3 @@
+['remote "data-versioning"']
+    url = s3://trabajo-final-mlops-erick-greivin
+    region = us-east-2
